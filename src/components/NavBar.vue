@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="relative flex flex-wrap items-center justify-between h-full px-6 bg-white"
+    class="relative flex flex-wrap items-end justify-between h-full px-6 bg-white"
   >
     <button
       class="focus:outline-none"
