@@ -1,6 +1,6 @@
 <template>
-  <div class="container mx-auto">
-    <header class="container fixed top-0 z-20 h-16">
+  <div class="mx-auto tight-container">
+    <header class="fixed top-0 z-20 h-16 tight-container">
       <NavBar />
     </header>
     <main class="px-4 pt-16">

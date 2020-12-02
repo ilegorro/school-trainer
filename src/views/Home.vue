@@ -47,9 +47,9 @@
         </div>
       </div>
     </section>
-    <section class="max-w-xs">
+    <section class="max-w-xs mx-auto">
       <div
-        class="flex items-center justify-center w-full py-2 mx-auto mb-3 border-t-2 border-b-2 border-green-400 border-solid"
+        class="flex items-center justify-center w-full py-2 mb-3 border-t-2 border-b-2 border-green-400 border-solid"
       >
         <p class="text-5xl font-semibold tracking-wider text-yellow-800">
           {{ firstTerm }} {{ sign }} {{ secondTerm }} =

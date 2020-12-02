@@ -6,4 +6,8 @@
   .h-content-area {
     height: calc(100vh - theme('spacing.16'));
   }
+  .tight-container {
+    width: 100%;
+    max-width: 800px;
+  }
 }
