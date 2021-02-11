@@ -2,20 +2,34 @@
   <div class="mt-8 h-content-area">
     <section class="w-full h-full max-w-md mx-auto">
       <div class="operation-block">
-        <label for="useAddition"> Сложение </label>
-        <input id="useAddition" v-model="useAddition" type="checkbox" />
+        <label class="inline-flex items-center mt-3">
+          <span class="mr-2">Сложение</span>
+          <input
+            v-model="useAddition"
+            type="checkbox"
+            class="w-5 h-5 form-checkbox"
+          />
+        </label>
       </div>
       <div class="operation-block">
-        <label for="useSubtraction"> Вычитание </label>
-        <input id="useSubtraction" v-model="useSubtraction" type="checkbox" />
+        <label class="inline-flex items-center mt-3">
+          <span class="mr-2">Вычитание</span>
+          <input
+            v-model="useSubtraction"
+            type="checkbox"
+            class="w-5 h-5 form-checkbox"
+          />
+        </label>
       </div>
       <div class="operation-block">
-        <label for="useMultiplication"> Умножение </label>
-        <input
-          id="useMultiplication"
-          v-model="useMultiplication"
-          type="checkbox"
-        />
+        <label class="inline-flex items-center mt-3">
+          <span class="mr-2">Умножение</span>
+          <input
+            v-model="useMultiplication"
+            type="checkbox"
+            class="w-5 h-5 form-checkbox"
+          />
+        </label>
       </div>
       <button
         class="flex items-center h-10 px-2 mt-8 border-2 border-red-600 border-solid rounded-md shadow-md active:bg-green-400 focus:outline-none"
@@ -70,6 +84,6 @@ export default {
 
 <style scoped>
 .operation-block {
-  @apply my-2 text-2xl font-semibold tracking-wider text-green-800;
+  @apply text-2xl font-semibold tracking-wider text-green-800;
 }
 </style>
