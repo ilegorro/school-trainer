@@ -47,15 +47,15 @@
         </div>
       </div>
     </section>
-    <section class="max-w-xs mx-auto">
+    <section class="w-full max-w-md mx-auto">
       <div
-        class="flex items-center justify-center w-full py-2 mb-3 border-t-2 border-b-2 border-green-400 border-solid"
+        class="flex items-center justify-center py-2 mb-3 border-t-2 border-b-2 border-green-400 border-solid"
       >
         <p class="text-5xl font-semibold tracking-wider text-yellow-800">
           {{ firstTerm }} {{ sign }} {{ secondTerm }} =
         </p>
         <p
-          class="inline-block w-16 ml-2 text-5xl font-semibold tracking-wider text-green-700"
+          class="inline-block w-20 ml-2 text-5xl font-semibold tracking-wider text-green-700"
         >
           {{ userAnswer }}
         </p>
@@ -123,6 +123,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -138,10 +139,12 @@ export default {
       correct: 0,
       animateHearts: false,
       animateSmile: false,
-      lastProblem: ''
+      lastProblem: '',
+      gameAvailable: true
     }
   },
   computed: {
+    ...mapState(['useOperations', 'gameStatus']),
     heartsCount() {
       return Math.min(Math.floor(this.correct / 5), 10)
     }
@@ -166,31 +169,81 @@ export default {
     }
   },
   created() {
+    this.strike = this.gameStatus.strike
+    this.mistakes = this.gameStatus.mistakes
+    this.correct = this.gameStatus.correct
     this.startGame()
+  },
+  beforeDestroy() {
+    const gameStatus = {
+      strike: this.strike,
+      mistakes: this.mistakes,
+      correct: this.correct
+    }
+    this.$store.dispatch('setGameStatus', gameStatus)
   },
   methods: {
     startGame() {
       this.userAnswer = ''
-      const t1 = Math.floor(Math.random() * 8) + 2
-      const t2 = Math.floor(Math.random() * 8) + 2
-      const s = Math.round(Math.random())
-      this.sign = s === 1 ? '+' : '-'
-      if (s === 1) {
-        this.firstTerm = t1
-        this.secondTerm = t2
-        this.correctAnswer = this.firstTerm + this.secondTerm
+      this.gameAvailable = true
+      const currentOperation = Math.floor(Math.random() * 3) + 1
+      this.getNewProblem(currentOperation)
+    },
+    getNewProblem(currentOperation) {
+      if (this.useOperations.addition && currentOperation === 1) {
+        this.getAddition()
+      } else if (this.useOperations.subtraction && currentOperation === 2) {
+        this.getSubtraction()
+      } else if (this.useOperations.multiplication && currentOperation === 3) {
+        this.getMultiplication()
+      } else if (
+        this.useOperations.addition ||
+        this.useOperations.subtraction ||
+        this.useOperations.multiplication
+      ) {
+        let newOperation = currentOperation + Math.floor(Math.random() * 2) + 1
+        newOperation = newOperation > 3 ? 1 : newOperation
+        this.getNewProblem(newOperation)
       } else {
-        this.firstTerm = Math.max(t1, t2)
-        this.secondTerm = Math.min(t1, t2)
-        this.correctAnswer = this.firstTerm - this.secondTerm
+        this.gameAvailable = false
       }
     },
+    getAddition() {
+      const t1 = Math.floor(Math.random() * 18) + 2
+      const t2 = Math.floor(Math.random() * 18) + 2
+
+      this.sign = '+'
+      this.firstTerm = t1
+      this.secondTerm = t2
+      this.correctAnswer = this.firstTerm + this.secondTerm
+    },
+    getSubtraction() {
+      const t1 = Math.floor(Math.random() * 38) + 2
+      const t2 = Math.floor(Math.random() * 38) + 2
+
+      this.sign = '-'
+      this.firstTerm = Math.max(t1, t2)
+      this.secondTerm = Math.min(t1, t2)
+      this.correctAnswer = this.firstTerm - this.secondTerm
+    },
+    getMultiplication() {
+      const t1 = Math.floor(Math.random() * 12)
+      const t2 = Math.floor(Math.random() * 12)
+
+      this.sign = '*'
+      this.firstTerm = t1
+      this.secondTerm = t2
+      this.correctAnswer = this.firstTerm * this.secondTerm
+    },
     pickDigit(digit) {
-      if (this.userAnswer.length < 2) {
+      if (this.gameAvailable && this.userAnswer.length < 3) {
         this.userAnswer += digit
       }
     },
     checkAnswer() {
+      if (!this.gameAvailable) {
+        return
+      }
       this.showSuccess = false
       this.showMistake = false
       if (this.userAnswer.length > 0) {
@@ -208,7 +261,7 @@ export default {
       }
     },
     undoSymbol() {
-      if (this.userAnswer) {
+      if (this.gameAvailable && this.userAnswer) {
         this.userAnswer = this.userAnswer.slice(0, -1)
       }
     }
