@@ -209,8 +209,8 @@ export default {
       }
     },
     getAddition() {
-      const t1 = Math.floor(Math.random() * 18) + 2
-      const t2 = Math.floor(Math.random() * 18) + 2
+      const t1 = Math.floor(Math.random() * 28) + 2
+      const t2 = Math.floor(Math.random() * 28) + 2
 
       this.sign = '+'
       this.firstTerm = t1
@@ -218,8 +218,8 @@ export default {
       this.correctAnswer = this.firstTerm + this.secondTerm
     },
     getSubtraction() {
-      const t1 = Math.floor(Math.random() * 38) + 2
-      const t2 = Math.floor(Math.random() * 38) + 2
+      const t1 = Math.floor(Math.random() * 58) + 2
+      const t2 = Math.floor(Math.random() * 58) + 2
 
       this.sign = '-'
       this.firstTerm = Math.max(t1, t2)
@@ -227,8 +227,8 @@ export default {
       this.correctAnswer = this.firstTerm - this.secondTerm
     },
     getMultiplication() {
-      const t1 = Math.floor(Math.random() * 12)
-      const t2 = Math.floor(Math.random() * 12)
+      const t1 = Math.floor(Math.random() * 11) + 1
+      const t2 = Math.floor(Math.random() * 11) + 1
 
       this.sign = '*'
       this.firstTerm = t1
