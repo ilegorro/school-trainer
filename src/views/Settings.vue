@@ -1,6 +1,6 @@
 <template>
-  <div class="mt-8 h-content-area">
-    <section class="w-full h-full max-w-md mx-auto">
+  <div class="h-content-area">
+    <section class="w-full max-w-md pt-8 mx-auto">
       <div class="operation-block">
         <label class="inline-flex items-center mt-3">
           <span class="mr-2">Сложение</span>
