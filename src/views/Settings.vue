@@ -31,6 +31,16 @@
           />
         </label>
       </div>
+      <div class="operation-block">
+        <label class="inline-flex items-center mt-3">
+          <span class="mr-2">Деление</span>
+          <input
+            v-model="useDivision"
+            type="checkbox"
+            class="w-5 h-5 form-checkbox"
+          />
+        </label>
+      </div>
       <button
         class="flex items-center h-10 px-2 mt-8 border-2 border-red-600 border-solid rounded-md shadow-md active:bg-green-400 focus:outline-none"
         @click="saveSettings"
@@ -58,7 +68,8 @@ export default {
     return {
       useAddition: false,
       useSubtraction: true,
-      useMultiplication: true
+      useMultiplication: true,
+      useDivision: true
     }
   },
   computed: {
@@ -68,13 +79,15 @@ export default {
     this.useAddition = this.useOperations.addition
     this.useSubtraction = this.useOperations.subtraction
     this.useMultiplication = this.useOperations.multiplication
+    this.useDivision = this.useOperations.division
   },
   methods: {
     saveSettings() {
       const settings = {
         addition: this.useAddition,
         subtraction: this.useSubtraction,
-        multiplication: this.useMultiplication
+        multiplication: this.useMultiplication,
+        division: this.useDivision
       }
       this.$store.dispatch('saveSettings', settings)
     }

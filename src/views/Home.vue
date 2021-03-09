@@ -51,7 +51,7 @@
       <div
         class="flex items-center justify-center py-2 mb-3 border-t-2 border-b-2 border-green-400 border-solid"
       >
-        <p class="text-5xl font-semibold tracking-wider text-yellow-800">
+        <p class="text-5xl font-semibold tracking-wide text-yellow-800">
           {{ firstTerm }} {{ sign }} {{ secondTerm }} =
         </p>
         <p
@@ -186,7 +186,7 @@ export default {
     startGame() {
       this.userAnswer = ''
       this.gameAvailable = true
-      const currentOperation = Math.floor(Math.random() * 3) + 1
+      const currentOperation = Math.floor(Math.random() * 4) + 1
       this.getNewProblem(currentOperation)
     },
     getNewProblem(currentOperation) {
@@ -196,13 +196,16 @@ export default {
         this.getSubtraction()
       } else if (this.useOperations.multiplication && currentOperation === 3) {
         this.getMultiplication()
+      } else if (this.useOperations.division && currentOperation === 4) {
+        this.getDivision()
       } else if (
         this.useOperations.addition ||
         this.useOperations.subtraction ||
-        this.useOperations.multiplication
+        this.useOperations.multiplication ||
+        this.useOperations.division
       ) {
-        let newOperation = currentOperation + Math.floor(Math.random() * 2) + 1
-        newOperation = newOperation > 3 ? 1 : newOperation
+        let newOperation = currentOperation + Math.floor(Math.random() * 3) + 1
+        newOperation = newOperation > 4 ? 1 : newOperation
         this.getNewProblem(newOperation)
       } else {
         this.gameAvailable = false
@@ -234,6 +237,15 @@ export default {
       this.firstTerm = t1
       this.secondTerm = t2
       this.correctAnswer = this.firstTerm * this.secondTerm
+    },
+    getDivision() {
+      const t1 = Math.floor(Math.random() * 11) + 1
+      const t2 = Math.floor(Math.random() * 11) + 1
+
+      this.sign = '/'
+      this.firstTerm = t1 * t2
+      this.secondTerm = t1
+      this.correctAnswer = t2
     },
     pickDigit(digit) {
       if (this.gameAvailable && this.userAnswer.length < 3) {

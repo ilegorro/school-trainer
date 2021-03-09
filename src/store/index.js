@@ -13,7 +13,8 @@ export default new Vuex.Store({
     useOperations: {
       addition: true,
       subtraction: true,
-      multiplication: true
+      multiplication: true,
+      division: true
     }
   },
   mutations: {
@@ -26,6 +27,7 @@ export default new Vuex.Store({
       state.useOperations.addition = !!data.addition
       state.useOperations.subtraction = !!data.subtraction
       state.useOperations.multiplication = !!data.multiplication
+      state.useOperations.division = !!data.division
     }
   },
   actions: {
