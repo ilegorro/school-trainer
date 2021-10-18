@@ -34,6 +34,22 @@ export default new Vuex.Store({
     setGameStatus({ commit }, data) {
       commit('SET_GAMESTATUS', data)
     },
+    handleRightAnswer({ state, commit }) {
+      const gameStatus = {
+        strike: state.gameStatus.strike + 1,
+        mistakes: state.gameStatus.mistakes,
+        correct: state.gameStatus.correct + 1
+      }
+      commit('SET_GAMESTATUS', gameStatus)
+    },
+    handleWrongAnswer({ state, commit }) {
+      const gameStatus = {
+        strike: 0,
+        mistakes: state.gameStatus.mistakes + 1,
+        correct: state.gameStatus.correct
+      }
+      commit('SET_GAMESTATUS', gameStatus)
+    },
     readSettings({ commit }) {
       const settings = JSON.parse(localStorage.getItem('school-trainer'))
       if (Object.keys(settings).length > 0 && settings.use_operations) {

@@ -1,52 +1,6 @@
 <template>
   <div class="grid gap-3 h-content-area grid-rows-1_1_1">
-    <section class="w-full h-full max-w-md mx-auto">
-      <div class="flex justify-center">
-        <p class="mx-2 text-green-800">Правильно: {{ correct }}</p>
-        <p class="mx-2 text-red-800">Ошибки: {{ mistakes }}</p>
-      </div>
-
-      <div class="flex justify-center mt-4 h-14">
-        <svg
-          v-for="n in heartsCount"
-          :key="n"
-          class="mx-1 text-red-700 transform scale-150"
-          :class="{ 'animate-spin': animateHearts }"
-          style="width:24px;height:24px"
-          viewBox="0 0 24 24"
-          @click="animateHearts = true"
-        >
-          <path
-            fill="currentColor"
-            d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
-          />
-        </svg>
-      </div>
-      <div
-        v-show="strike > 2"
-        class="mt-3 text-xl font-semibold tracking-wider text-green-800"
-      >
-        <div class="flex flex-wrap items-center justify-center ">
-          <p class="mr-2 text-3xl">
-            {{ strike }}
-          </p>
-          <p>
-            подряд! Молодец!
-          </p>
-
-          <svg
-            class="w-6 ml-2 text-yellow-400 transform scale-150 fill-current"
-            viewBox="0 0 24 24"
-            :class="{ 'animate-bounce': animateSmile }"
-            @click="animateSmile = true"
-          >
-            <path
-              d="M12,17.5C14.33,17.5 16.3,16.04 17.11,14H6.89C7.69,16.04 9.67,17.5 12,17.5M8.5,11A1.5,1.5 0 0,0 10,9.5A1.5,1.5 0 0,0 8.5,8A1.5,1.5 0 0,0 7,9.5A1.5,1.5 0 0,0 8.5,11M15.5,11A1.5,1.5 0 0,0 17,9.5A1.5,1.5 0 0,0 15.5,8A1.5,1.5 0 0,0 14,9.5A1.5,1.5 0 0,0 15.5,11M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
-            />
-          </svg>
-        </div>
-      </div>
-    </section>
+    <InfoPanel />
     <section class="w-full max-w-md mx-auto">
       <div
         class="flex items-center justify-center py-2 mb-3 border-t-2 border-b-2 border-green-400 border-solid"
@@ -81,7 +35,7 @@
         <div
           v-for="n in 10"
           :key="n"
-          class="flex items-center justify-center h-10 text-xl font-semibold text-blue-900 bg-gray-200 rounded-md shadow-md w-14 active:bg-green-500"
+          class="flex items-center justify-center h-10 text-xl font-semibold text-blue-900 bg-gray-200 rounded-md shadow-md w-14 active:bg-green-500 cursor-pointer"
           @click="pickDigit(n === 10 ? 0 : n)"
         >
           {{ n === 10 ? 0 : n }}
@@ -123,8 +77,12 @@
 </template>
 
 <script>
+import InfoPanel from '@/components/InfoPanel.vue'
 import { mapState } from 'vuex'
 export default {
+  components: {
+    InfoPanel
+  },
   data() {
     return {
       showSuccess: false,
@@ -134,53 +92,15 @@ export default {
       sign: '',
       userAnswer: '',
       correctAnswer: 0,
-      strike: 0,
-      mistakes: 0,
-      correct: 0,
-      animateHearts: false,
-      animateSmile: false,
       lastProblem: '',
       gameAvailable: true
     }
   },
   computed: {
-    ...mapState(['useOperations', 'gameStatus']),
-    heartsCount() {
-      return Math.min(Math.floor(this.correct / 5), 10)
-    }
-  },
-  watch: {
-    heartsCount() {
-      this.animateHearts = true
-    },
-    animateHearts(newVal) {
-      if (newVal) {
-        setTimeout(() => {
-          this.animateHearts = false
-        }, 2000)
-      }
-    },
-    animateSmile(newVal) {
-      if (newVal) {
-        setTimeout(() => {
-          this.animateSmile = false
-        }, 2000)
-      }
-    }
+    ...mapState(['useOperations'])
   },
   created() {
-    this.strike = this.gameStatus.strike
-    this.mistakes = this.gameStatus.mistakes
-    this.correct = this.gameStatus.correct
     this.startGame()
-  },
-  beforeDestroy() {
-    const gameStatus = {
-      strike: this.strike,
-      mistakes: this.mistakes,
-      correct: this.correct
-    }
-    this.$store.dispatch('setGameStatus', gameStatus)
   },
   methods: {
     startGame() {
@@ -260,12 +180,10 @@ export default {
       this.showMistake = false
       if (this.userAnswer.length > 0) {
         if (this.correctAnswer == this.userAnswer) {
-          this.correct++
-          this.strike++
+          this.$store.dispatch('handleRightAnswer')
           this.showSuccess = true
         } else {
-          this.mistakes++
-          this.strike = 0
+          this.$store.dispatch('handleWrongAnswer')
           this.showMistake = true
         }
         this.lastProblem = `${this.firstTerm} ${this.sign} ${this.secondTerm} = ${this.correctAnswer}`
