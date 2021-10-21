@@ -1,45 +1,36 @@
 <template>
   <div class="h-content-area">
     <section class="w-full max-w-md pt-8 mx-auto">
-      <div class="operation-block">
+      <div
+        v-for="operation in operations"
+        :key="operation.id"
+        class="operation-block"
+      >
         <label class="inline-flex items-center mt-3">
-          <span class="mr-2">Сложение</span>
+          <span class="mr-2">{{ operation.name }}</span>
           <input
-            v-model="useAddition"
+            v-model="operation.value"
             type="checkbox"
             class="w-5 h-5 form-checkbox"
           />
         </label>
-      </div>
-      <div class="operation-block">
-        <label class="inline-flex items-center mt-3">
-          <span class="mr-2">Вычитание</span>
-          <input
-            v-model="useSubtraction"
-            type="checkbox"
-            class="w-5 h-5 form-checkbox"
-          />
-        </label>
-      </div>
-      <div class="operation-block">
-        <label class="inline-flex items-center mt-3">
-          <span class="mr-2">Умножение</span>
-          <input
-            v-model="useMultiplication"
-            type="checkbox"
-            class="w-5 h-5 form-checkbox"
-          />
-        </label>
-      </div>
-      <div class="operation-block">
-        <label class="inline-flex items-center mt-3">
-          <span class="mr-2">Деление</span>
-          <input
-            v-model="useDivision"
-            type="checkbox"
-            class="w-5 h-5 form-checkbox"
-          />
-        </label>
+        <div class="flex">
+          <VueSlider
+            v-model="operation.range1"
+            class="mr-10"
+            :min="+1"
+            :max="operation.maxValue"
+            :min-range="+1"
+            :width="100"
+          ></VueSlider>
+          <VueSlider
+            v-model="operation.range2"
+            :min="+1"
+            :max="operation.maxValue"
+            :min-range="+1"
+            :width="100"
+          ></VueSlider>
+        </div>
       </div>
       <button
         class="flex items-center h-10 px-2 mt-8 border-2 border-red-600 border-solid rounded-md shadow-md active:bg-green-400 focus:outline-none"
@@ -62,33 +53,70 @@
 </template>
 
 <script>
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/default.css'
 import { mapState } from 'vuex'
 export default {
+  components: {
+    VueSlider
+  },
   data() {
     return {
-      useAddition: false,
-      useSubtraction: true,
-      useMultiplication: true,
-      useDivision: true
+      operations: [
+        {
+          id: 'addition',
+          name: 'Сложение',
+          value: false,
+          range1: [1, 50],
+          range2: [1, 50],
+          maxValue: 50
+        },
+        {
+          id: 'subtraction',
+          name: 'Вычитание',
+          value: false,
+          range1: [50, 100],
+          range2: [1, 50],
+          maxValue: 50
+        },
+        {
+          id: 'multiplication',
+          name: 'Умножение',
+          value: false,
+          range1: [1, 12],
+          range2: [1, 12],
+          maxValue: 12
+        },
+        {
+          id: 'division',
+          name: 'Деление',
+          value: false,
+          range1: [1, 12],
+          range2: [1, 12],
+          maxValue: 12
+        }
+      ]
     }
   },
   computed: {
     ...mapState(['useOperations'])
   },
   mounted() {
-    this.useAddition = this.useOperations.addition
-    this.useSubtraction = this.useOperations.subtraction
-    this.useMultiplication = this.useOperations.multiplication
-    this.useDivision = this.useOperations.division
+    for (const [name, value] of Object.entries(this.useOperations)) {
+      this.operations.forEach(element => {
+        if (element.id === name) {
+          element.value = value
+        }
+      })
+    }
   },
   methods: {
     saveSettings() {
-      const settings = {
-        addition: this.useAddition,
-        subtraction: this.useSubtraction,
-        multiplication: this.useMultiplication,
-        division: this.useDivision
-      }
+      const settings = this.operations.reduce((acc, el) => {
+        acc[el.id] = el.value
+        return acc
+      }, {})
+      console.log(settings)
       this.$store.dispatch('saveSettings', settings)
     }
   }
