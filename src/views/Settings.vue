@@ -94,7 +94,7 @@ export default {
           range1Name: 'Уменьшаемое',
           range2: [],
           range2Name: 'Вычитаемое',
-          minValue1: 50,
+          minValue1: 10,
           maxValue1: 100,
           minValue2: 1,
           maxValue2: 50
@@ -120,7 +120,7 @@ export default {
           range1Name: 'Делимое',
           range2: [],
           range2Name: 'Делитель',
-          minValue1: 4,
+          minValue1: 12,
           maxValue1: 144,
           minValue2: 2,
           maxValue2: 12
@@ -154,7 +154,6 @@ export default {
         }
         return acc
       }, {})
-      console.log(settings)
       this.$store.dispatch('saveSettings', settings)
     }
   }

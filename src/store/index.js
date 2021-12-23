@@ -49,7 +49,7 @@ export default new Vuex.Store({
       } else {
         state.useOperations.subtraction = {
           enabled: true,
-          number1from: 50,
+          number1from: 10,
           number1to: 100,
           number2from: 1,
           number2to: 50
@@ -85,7 +85,7 @@ export default new Vuex.Store({
       } else {
         state.useOperations.division = {
           enabled: true,
-          number1from: 4,
+          number1from: 12,
           number1to: 144,
           number2from: 2,
           number2to: 12

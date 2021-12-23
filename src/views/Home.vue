@@ -106,34 +106,47 @@ export default {
     startGame() {
       this.userAnswer = ''
       this.gameAvailable = true
-      const currentOperation = Math.floor(Math.random() * 4) + 1
-      this.getNewProblem(currentOperation)
-    },
-    getNewProblem(currentOperation) {
-      if (this.useOperations.addition && currentOperation === 1) {
-        this.getAddition()
-      } else if (this.useOperations.subtraction && currentOperation === 2) {
-        this.getSubtraction()
-      } else if (this.useOperations.multiplication && currentOperation === 3) {
-        this.getMultiplication()
-      } else if (this.useOperations.division && currentOperation === 4) {
-        this.getDivision()
-      } else if (
-        this.useOperations.addition ||
-        this.useOperations.subtraction ||
-        this.useOperations.multiplication ||
-        this.useOperations.division
-      ) {
-        let newOperation = currentOperation + Math.floor(Math.random() * 3) + 1
-        newOperation = newOperation > 4 ? 1 : newOperation
-        this.getNewProblem(newOperation)
+      const operations = []
+      this.useOperations.addition.enabled && operations.push('addition')
+      this.useOperations.subtraction.enabled && operations.push('subtraction')
+      this.useOperations.multiplication.enabled &&
+        operations.push('multiplication')
+      this.useOperations.division.enabled && operations.push('division')
+
+      if (operations.length) {
+        const currentOperation = Math.floor(Math.random() * operations.length)
+        this.getNewProblem(operations[currentOperation])
       } else {
         this.gameAvailable = false
       }
     },
+    getNewProblem(currentOperation) {
+      if (currentOperation === 'addition') {
+        this.getAddition()
+      } else if (currentOperation === 'subtraction') {
+        this.getSubtraction()
+      } else if (currentOperation === 'multiplication') {
+        this.getMultiplication()
+      } else if (currentOperation === 'division') {
+        this.getDivision()
+      }
+    },
     getAddition() {
-      const t1 = Math.floor(Math.random() * 28) + 2
-      const t2 = Math.floor(Math.random() * 28) + 2
+      const range1 =
+        this.useOperations.addition.number1to -
+        this.useOperations.addition.number1from +
+        1
+      const range2 =
+        this.useOperations.addition.number2to -
+        this.useOperations.addition.number2from +
+        1
+      const t1 =
+        Math.floor(Math.random() * range1) +
+        this.useOperations.addition.number1from
+
+      const t2 =
+        Math.floor(Math.random() * range2) +
+        this.useOperations.addition.number2from
 
       this.sign = '+'
       this.firstTerm = t1
@@ -141,8 +154,21 @@ export default {
       this.correctAnswer = this.firstTerm + this.secondTerm
     },
     getSubtraction() {
-      const t1 = Math.floor(Math.random() * 58) + 2
-      const t2 = Math.floor(Math.random() * 58) + 2
+      const range1 =
+        this.useOperations.subtraction.number1to -
+        this.useOperations.subtraction.number1from +
+        1
+      const range2 =
+        this.useOperations.subtraction.number2to -
+        this.useOperations.subtraction.number2from +
+        1
+
+      const t1 =
+        Math.floor(Math.random() * range1) +
+        this.useOperations.subtraction.number1from
+      const t2 =
+        Math.floor(Math.random() * range2) +
+        this.useOperations.subtraction.number2from
 
       this.sign = '-'
       this.firstTerm = Math.max(t1, t2)
@@ -150,8 +176,21 @@ export default {
       this.correctAnswer = this.firstTerm - this.secondTerm
     },
     getMultiplication() {
-      const t1 = Math.floor(Math.random() * 11) + 1
-      const t2 = Math.floor(Math.random() * 11) + 1
+      const range1 =
+        this.useOperations.multiplication.number1to -
+        this.useOperations.multiplication.number1from +
+        1
+      const range2 =
+        this.useOperations.multiplication.number2to -
+        this.useOperations.multiplication.number2from +
+        1
+
+      const t1 =
+        Math.floor(Math.random() * range1) +
+        this.useOperations.multiplication.number1from
+      const t2 =
+        Math.floor(Math.random() * range2) +
+        this.useOperations.multiplication.number2from
 
       this.sign = '*'
       this.firstTerm = t1
@@ -159,13 +198,30 @@ export default {
       this.correctAnswer = this.firstTerm * this.secondTerm
     },
     getDivision() {
-      const t1 = Math.floor(Math.random() * 11) + 1
-      const t2 = Math.floor(Math.random() * 11) + 1
+      const range2 =
+        this.useOperations.division.number2to -
+        this.useOperations.division.number2from +
+        1
+      const t2 =
+        Math.floor(Math.random() * range2) +
+        this.useOperations.division.number2from
+
+      const range1 =
+        this.useOperations.division.number1to -
+        Math.max(t2, this.useOperations.division.number1from) +
+        1
+      let t1 =
+        Math.floor(Math.random() * range1) +
+        Math.max(t2, this.useOperations.division.number1from)
+
+      while (t1 % t2 !== 0) {
+        t1--
+      }
 
       this.sign = '/'
-      this.firstTerm = t1 * t2
-      this.secondTerm = t1
-      this.correctAnswer = t2
+      this.firstTerm = t1
+      this.secondTerm = t2
+      this.correctAnswer = Math.floor(t1 / t2)
     },
     pickDigit(digit) {
       if (this.gameAvailable && this.userAnswer.length < 3) {
