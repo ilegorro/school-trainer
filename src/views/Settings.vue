@@ -1,6 +1,6 @@
 <template>
   <div class="h-content-area">
-    <section class="w-full max-w-md pt-8 mx-auto">
+    <section class="w-full max-w-md py-8 mx-auto">
       <div
         v-for="operation in operations"
         :key="operation.id"
