@@ -10,12 +10,7 @@ export default new Vuex.Store({
       mistakes: 0,
       correct: 0
     },
-    useOperations: {
-      addition: true,
-      subtraction: true,
-      multiplication: true,
-      division: true
-    }
+    useOperations: {}
   },
   mutations: {
     SET_GAMESTATUS(state, data) {
@@ -24,10 +19,78 @@ export default new Vuex.Store({
       state.gameStatus.correct = data.correct || 0
     },
     SET_USEOPERATIONS(state, data) {
-      state.useOperations.addition = !!data.addition
-      state.useOperations.subtraction = !!data.subtraction
-      state.useOperations.multiplication = !!data.multiplication
-      state.useOperations.division = !!data.division
+      if (
+        data.addition &&
+        data.addition.enabled !== undefined &&
+        data.addition.number1from &&
+        data.addition.number1to &&
+        data.addition.number2from &&
+        data.addition.number2to
+      ) {
+        state.useOperations.addition = data.addition
+      } else {
+        state.useOperations.addition = {
+          enabled: true,
+          number1from: 1,
+          number1to: 50,
+          number2from: 1,
+          number2to: 50
+        }
+      }
+      if (
+        data.subtraction &&
+        data.subtraction.enabled !== undefined &&
+        data.subtraction.number1from &&
+        data.subtraction.number1to &&
+        data.subtraction.number2from &&
+        data.subtraction.number2to
+      ) {
+        state.useOperations.subtraction = data.subtraction
+      } else {
+        state.useOperations.subtraction = {
+          enabled: true,
+          number1from: 50,
+          number1to: 100,
+          number2from: 1,
+          number2to: 50
+        }
+      }
+      if (
+        data.multiplication &&
+        data.multiplication.enabled !== undefined &&
+        data.multiplication.number1from &&
+        data.multiplication.number1to &&
+        data.multiplication.number2from &&
+        data.multiplication.number2to
+      ) {
+        state.useOperations.multiplication = data.multiplication
+      } else {
+        state.useOperations.multiplication = {
+          enabled: true,
+          number1from: 1,
+          number1to: 12,
+          number2from: 1,
+          number2to: 12
+        }
+      }
+      if (
+        data.division &&
+        data.division.enabled !== undefined &&
+        data.division.number1from &&
+        data.division.number1to &&
+        data.division.number2from &&
+        data.division.number2to
+      ) {
+        state.useOperations.division = data.division
+      } else {
+        state.useOperations.division = {
+          enabled: true,
+          number1from: 4,
+          number1to: 144,
+          number2from: 2,
+          number2to: 12
+        }
+      }
     }
   },
   actions: {
@@ -52,8 +115,15 @@ export default new Vuex.Store({
     },
     readSettings({ commit }) {
       const settings = JSON.parse(localStorage.getItem('school-trainer'))
-      if (Object.keys(settings).length > 0 && settings.use_operations) {
+      if (
+        settings &&
+        Object.keys(settings).length > 0 &&
+        settings.use_operations
+      ) {
+        console.log(settings.use_operations)
         commit('SET_USEOPERATIONS', settings.use_operations)
+      } else {
+        commit('SET_USEOPERATIONS', {})
       }
     },
     saveSettings({ commit }, data) {

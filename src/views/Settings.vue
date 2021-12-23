@@ -7,47 +7,57 @@
         class="operation-block"
       >
         <label class="inline-flex items-center mt-3">
-          <span class="mr-2">{{ operation.name }}</span>
+          <span class="mr-2 text-2xl">{{ operation.name }}</span>
           <input
             v-model="operation.value"
             type="checkbox"
             class="w-5 h-5 form-checkbox"
           />
         </label>
-        <div class="flex">
+        <section>
+          <span
+            >{{ operation.range1Name }} от {{ operation.range1[0] }} до
+            {{ operation.range1[1] }}</span
+          >
           <VueSlider
             v-model="operation.range1"
             class="mr-10"
-            :min="+1"
-            :max="operation.maxValue"
+            :min="operation.minValue1"
+            :max="operation.maxValue1"
             :min-range="+1"
-            :width="100"
+            :width="200"
           ></VueSlider>
+          <span
+            >{{ operation.range2Name }} от {{ operation.range2[0] }} до
+            {{ operation.range2[1] }}</span
+          >
           <VueSlider
             v-model="operation.range2"
-            :min="+1"
-            :max="operation.maxValue"
+            :min="operation.minValue2"
+            :max="operation.maxValue2"
             :min-range="+1"
-            :width="100"
+            :width="200"
           ></VueSlider>
-        </div>
+        </section>
       </div>
-      <button
-        class="flex items-center h-10 px-2 mt-8 border-2 border-red-600 border-solid rounded-md shadow-md active:bg-green-400 focus:outline-none"
-        @click="saveSettings"
-      >
-        <p class="mx-2 text-xl font-semibold text-green-800">Записать</p>
-        <svg
-          style="width:24px;height:24px"
-          viewBox="0 0 24 24"
-          class="mx-auto text-green-800"
+      <div class="flex justify-center">
+        <button
+          class="flex items-center h-10 px-2 border-2 border-red-600 border-solid rounded-md shadow-md active:bg-green-400 focus:outline-none"
+          @click="saveSettings"
         >
-          <path
-            fill="currentColor"
-            d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"
-          />
-        </svg>
-      </button>
+          <p class="mx-2 text-xl font-semibold text-green-800">Записать</p>
+          <svg
+            style="width:24px;height:24px"
+            viewBox="0 0 24 24"
+            class="mx-auto text-green-800"
+          >
+            <path
+              fill="currentColor"
+              d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"
+            />
+          </svg>
+        </button>
+      </div>
     </section>
   </div>
 </template>
@@ -67,33 +77,53 @@ export default {
           id: 'addition',
           name: 'Сложение',
           value: false,
-          range1: [1, 50],
-          range2: [1, 50],
-          maxValue: 50
+          range1: [],
+          range1Name: 'Первое слагаемое',
+          range2: [],
+          range2Name: 'Второе слагаемое',
+          minValue1: 1,
+          maxValue1: 50,
+          minValue2: 1,
+          maxValue2: 50
         },
         {
           id: 'subtraction',
           name: 'Вычитание',
           value: false,
-          range1: [50, 100],
-          range2: [1, 50],
-          maxValue: 50
+          range1: [],
+          range1Name: 'Уменьшаемое',
+          range2: [],
+          range2Name: 'Вычитаемое',
+          minValue1: 50,
+          maxValue1: 100,
+          minValue2: 1,
+          maxValue2: 50
         },
         {
           id: 'multiplication',
           name: 'Умножение',
           value: false,
-          range1: [1, 12],
-          range2: [1, 12],
-          maxValue: 12
+          range1: [],
+          range1Name: 'Первый множитель',
+          range2: [],
+          range2Name: 'Второй множитель',
+          minValue1: 1,
+          maxValue1: 12,
+          minValue2: 1,
+          maxValue2: 12
         },
         {
           id: 'division',
           name: 'Деление',
           value: false,
-          range1: [1, 12],
-          range2: [1, 12],
-          maxValue: 12
+          range1: [],
+          range1Name: 'Делимое',
+          range2: [],
+          range2Name: 'Делитель',
+          minValue1: 4,
+          maxValue1: 144,
+          minValue2: 2,
+          maxValue2: 12
         }
       ]
     }
@@ -105,7 +135,9 @@ export default {
     for (const [name, value] of Object.entries(this.useOperations)) {
       this.operations.forEach(element => {
         if (element.id === name) {
-          element.value = value
+          element.value = value.enabled
+          element.range1 = [value.number1from, value.number1to]
+          element.range2 = [value.number2from, value.number2to]
         }
       })
     }
@@ -113,7 +145,13 @@ export default {
   methods: {
     saveSettings() {
       const settings = this.operations.reduce((acc, el) => {
-        acc[el.id] = el.value
+        acc[el.id] = {
+          enabled: el.value,
+          number1from: el.range1[0],
+          number1to: el.range1[1],
+          number2from: el.range2[0],
+          number2to: el.range2[1]
+        }
         return acc
       }, {})
       console.log(settings)
@@ -125,7 +163,7 @@ export default {
 
 <style scoped>
 .operation-block {
-  @apply text-2xl font-semibold tracking-wider text-green-800;
+  @apply text-base font-semibold tracking-wider text-green-800 mb-6;
 }
 .form-checkbox {
   -webkit-appearance: none;
