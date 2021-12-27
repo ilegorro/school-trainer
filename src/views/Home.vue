@@ -3,29 +3,46 @@
     <InfoPanel />
     <section class="w-full max-w-md mx-auto">
       <div
-        class="flex items-center justify-center py-2 mb-3 border-t-2 border-b-2 border-green-400 border-solid"
+        class="flex items-center justify-center py-2 mb-3 border-t-2 border-b-2 border-solid"
+        :class="theme === 'dark' ? 'border-green-600' : 'border-green-400'"
       >
-        <p class="text-5xl font-semibold tracking-wide text-yellow-800">
+        <p
+          class="text-5xl font-semibold tracking-wide "
+          :class="theme === 'dark' ? 'text-yellow-600' : 'text-yellow-800'"
+        >
           {{ firstTerm }} {{ sign }} {{ secondTerm }} =
         </p>
         <p
-          class="inline-block w-20 ml-2 text-5xl font-semibold tracking-wider text-green-700"
+          class="inline-block w-20 ml-2 text-5xl font-semibold tracking-wider"
+          :class="theme === 'dark' ? 'text-green-500' : 'text-green-800'"
         >
           {{ userAnswer }}
         </p>
       </div>
-      <section v-show="showSuccess" class="text-center">
-        <p class="text-xl font-bold text-red-600">Правильно!</p>
-        <p class="text-xl font-bold text-red-600">
-          Продолжай решать!
-        </p>
+      <section
+        v-show="showSuccess"
+        class="text-center text-xl font-bold text-red-600"
+      >
+        <p>Правильно!</p>
+        <p>Продолжай решать!</p>
       </section>
       <section v-show="showMistake" class="text-center">
-        <p class="text-xl font-bold text-green-800">Ошибочка!</p>
-        <p class="text-xl font-bold text-blue-800">
+        <p
+          class="text-xl font-bold"
+          :class="theme === 'dark' ? 'text-green-500' : 'text-green-800'"
+        >
+          Ошибочка!
+        </p>
+        <p
+          class="text-xl font-bold"
+          :class="theme === 'dark' ? 'text-blue-500' : 'text-blue-800'"
+        >
           {{ lastProblem }}
         </p>
-        <p class="text-xl font-bold text-yellow-800">
+        <p
+          class="text-xl font-bold "
+          :class="theme === 'dark' ? 'text-yellow-600' : 'text-yellow-800'"
+        >
           Ничего страшного!
         </p>
       </section>
@@ -35,20 +52,26 @@
         <div
           v-for="n in 10"
           :key="n"
-          class="flex items-center justify-center h-10 text-xl font-semibold text-blue-900 bg-gray-200 rounded-md shadow-md w-14 active:bg-green-500 cursor-pointer"
+          class="flex items-center justify-center h-10 text-xl font-semibold   rounded-md shadow-md w-14 cursor-pointer border"
+          :class="
+            theme === 'dark'
+              ? 'bg-gray-700 text-yellow-500 border-yellow-700'
+              : 'bg-gray-200 text-blue-900 border-yellow-900'
+          "
           @click="pickDigit(n === 10 ? 0 : n)"
         >
           {{ n === 10 ? 0 : n }}
         </div>
 
         <button
-          class="h-10 border-2 border-green-600 border-solid rounded-md shadow-md w-14 active:bg-green-400 focus:outline-none"
+          class="h-10 border-2 border-green-600 border-solid rounded-md shadow-md w-14  focus:outline-none"
           @click="checkAnswer"
         >
           <svg
             style="width:24px;height:24px"
             viewBox="0 0 24 24"
-            class="mx-auto text-green-800"
+            class="mx-auto"
+            :class="theme === 'dark' ? 'text-green-500' : 'text-green-800'"
           >
             <path
               fill="currentColor"
@@ -63,7 +86,8 @@
           <svg
             style="width:24px;height:24px"
             viewBox="0 0 24 24"
-            class="mx-auto text-red-800"
+            class="mx-auto"
+            :class="theme === 'dark' ? 'text-red-500' : 'text-red-800'"
           >
             <path
               fill="currentColor"
@@ -97,7 +121,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['useOperations'])
+    ...mapState(['useOperations', 'theme'])
   },
   created() {
     this.startGame()

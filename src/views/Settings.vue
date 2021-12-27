@@ -1,15 +1,13 @@
 <template>
-  <div class="h-content-area">
+  <div class="h-content-area px-1">
     <section class="w-full max-w-md py-8 mx-auto">
       <div
         v-for="operation in operations"
         :key="operation.id"
-        class="operation-block"
-        :class="
-          theme === 'dark' ? 'operation-block-dark' : 'operation-block-light'
-        "
+        class="operation-block px-4 py-1 rounded-lg"
+        :class="theme === 'dark' ? 'text-dark ' : 'text-light '"
       >
-        <label class="inline-flex items-center mt-3">
+        <label class="inline-flex items-center">
           <span class="mr-2 text-2xl">{{ operation.name }}</span>
           <input
             v-model="operation.value"
@@ -45,14 +43,19 @@
       </div>
       <div class="flex justify-center">
         <button
-          class="flex items-center h-10 px-2 border-2 border-red-600 border-solid rounded-md shadow-md active:bg-green-400 focus:outline-none"
+          class="flex items-center h-10 px-2 border-2  border-solid rounded-md shadow-md focus:outline-none"
+          :class="
+            theme === 'dark'
+              ? 'text-dark border-red-700'
+              : 'text-light border-red-900'
+          "
           @click="saveSettings"
         >
-          <p class="mx-2 text-xl font-semibold text-green-800">Записать</p>
+          <p class="mx-2 text-xl font-semibold ">Записать</p>
           <svg
             style="width:24px;height:24px"
             viewBox="0 0 24 24"
-            class="mx-auto text-green-800"
+            class="mx-auto"
           >
             <path
               fill="currentColor"
@@ -172,12 +175,12 @@ export default {
   pointer-events: none;
 }
 .operation-block {
-  @apply text-base font-semibold tracking-wider mb-6;
+  @apply text-base font-semibold tracking-wider mb-3;
 }
-.operation-block-light {
+.text-light {
   @apply text-green-800;
 }
-.operation-block-dark {
+.text-dark {
   @apply text-green-500;
 }
 .form-checkbox {
