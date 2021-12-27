@@ -14,7 +14,7 @@
             class="w-5 h-5 form-checkbox"
           />
         </label>
-        <section>
+        <section :class="{ 'range-not-active': !operation.value }">
           <span
             >{{ operation.range1Name }} от {{ operation.range1[0] }} до
             {{ operation.range1[1] }}</span
@@ -154,13 +154,20 @@ export default {
         }
         return acc
       }, {})
-      this.$store.dispatch('saveSettings', settings)
+      this.$store
+        .dispatch('saveSettings', settings)
+        .then(() => this.$router.push({ name: 'home' }))
     }
   }
 }
 </script>
 
 <style scoped>
+.range-not-active {
+  opacity: 0.5;
+  color: #aaa;
+  pointer-events: none;
+}
 .operation-block {
   @apply text-base font-semibold tracking-wider text-green-800 mb-6;
 }
@@ -178,11 +185,11 @@ export default {
   -ms-user-select: none;
   user-select: none;
   flex-shrink: 0;
-  height: 1em;
-  width: 1em;
+  height: 1.2em;
+  width: 1.2em;
   color: #4299e1;
   background-color: #fff;
-  border-color: #e2e8f0;
+  border-color: #4299e1;
   border-width: 1px;
   border-radius: 0.25rem;
 }
