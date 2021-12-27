@@ -1,5 +1,8 @@
 <template>
-  <nav class="relative flex flex-wrap items-end justify-between h-full px-6">
+  <nav
+    class="relative flex flex-wrap items-end justify-between h-full px-6 py-1"
+    :class="theme === 'dark' ? 'bg-gray-800' : 'bg-white'"
+  >
     <button
       class="focus:outline-none"
       @click="$route.name === 'home' || $router.push({ name: 'home' })"
