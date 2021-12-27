@@ -1,24 +1,15 @@
-# school-trainer
+#Школьный тренажер
 
-## Project setup
-```
-npm install
-```
+### Предназначение
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Помогает тренировать навыки счета. Подойдет для детей младшего школьного возраста.
+Адаптирован для работы на мобильных устройствах.
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### Функциональность
 
-### Lints and fixes files
-```
-npm run lint
-```
+Позволяет выбирать любые из 4 доступных арифметических операций.
+Для каждой выбранной операции позволяет устанавливать диапазон, из которого случайным образом выбираются числа для задания.
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Демонстрация
+
+[school-trainer.netlify.app](https://school-trainer.netlify.app)
