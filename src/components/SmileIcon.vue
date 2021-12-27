@@ -1,8 +1,11 @@
 <template>
   <svg
-    class="w-6 ml-2 text-yellow-400 transform scale-150 fill-current"
+    class="w-6 ml-2  transform scale-150 fill-current"
     viewBox="0 0 24 24"
-    :class="{ 'animate-bounce': animateSmile }"
+    :class="[
+      { 'animate-bounce': animateSmile },
+      theme === 'dark' ? 'text-yellow-500' : 'text-yellow-400'
+    ]"
     @click="animateSmile = true"
   >
     <path
@@ -12,6 +15,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'SmileIcon',
 
@@ -20,6 +24,10 @@ export default {
       animateSmile: false
     }
   },
+  computed: {
+    ...mapState(['theme'])
+  },
+
   watch: {
     animateSmile(newVal) {
       if (newVal) {
