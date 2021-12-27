@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full h-full max-w-md mx-auto">
+  <section class="w-full h-full max-w-md mx-auto pt-3">
     <div class="flex justify-center">
       <p class="mx-2 text-green-800">Правильно: {{ gameStatus.correct }}</p>
       <p class="mx-2 text-red-800">Ошибки: {{ gameStatus.mistakes }}</p>

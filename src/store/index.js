@@ -10,9 +10,13 @@ export default new Vuex.Store({
       mistakes: 0,
       correct: 0
     },
-    useOperations: {}
+    useOperations: {},
+    theme: 'light'
   },
   mutations: {
+    SET_THEME(state, theme) {
+      state.theme = theme || 'light'
+    },
     SET_GAMESTATUS(state, data) {
       state.gameStatus.strike = data.strike || 0
       state.gameStatus.mistakes = data.mistakes || 0
@@ -94,6 +98,13 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    toggleTheme({ state, commit }) {
+      if (state.theme === 'light') {
+        commit('SET_THEME', 'dark')
+      } else {
+        commit('SET_THEME', 'light')
+      }
+    },
     setGameStatus({ commit }, data) {
       commit('SET_GAMESTATUS', data)
     },
@@ -120,7 +131,7 @@ export default new Vuex.Store({
         Object.keys(settings).length > 0 &&
         settings.use_operations
       ) {
-        console.log(settings.use_operations)
+        //console.log(settings.use_operations)
         commit('SET_USEOPERATIONS', settings.use_operations)
       } else {
         commit('SET_USEOPERATIONS', {})

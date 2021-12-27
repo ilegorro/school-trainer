@@ -5,6 +5,9 @@
         v-for="operation in operations"
         :key="operation.id"
         class="operation-block"
+        :class="
+          theme === 'dark' ? 'operation-block-dark' : 'operation-block-light'
+        "
       >
         <label class="inline-flex items-center mt-3">
           <span class="mr-2 text-2xl">{{ operation.name }}</span>
@@ -129,7 +132,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['useOperations'])
+    ...mapState(['useOperations', 'theme'])
   },
   mounted() {
     for (const [name, value] of Object.entries(this.useOperations)) {
@@ -169,7 +172,13 @@ export default {
   pointer-events: none;
 }
 .operation-block {
-  @apply text-base font-semibold tracking-wider text-green-800 mb-6;
+  @apply text-base font-semibold tracking-wider mb-6;
+}
+.operation-block-light {
+  @apply text-green-800;
+}
+.operation-block-dark {
+  @apply text-green-500;
 }
 .form-checkbox {
   -webkit-appearance: none;
