@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mx-auto tight-container overflow-hidden"
+    class="mx-auto tight-container"
     :class="theme === 'dark' ? 'bg-gray-800' : 'bg-white'"
   >
     <header class="fixed top-0 z-20 h-10 tight-container">
