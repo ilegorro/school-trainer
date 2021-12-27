@@ -2,10 +2,15 @@
   <div class="h-content-area px-1">
     <section class="w-full max-w-md py-8 mx-auto">
       <div
-        v-for="operation in operations"
+        v-for="(operation, idx) in operations"
         :key="operation.id"
-        class="operation-block px-4 py-1 rounded-lg"
-        :class="theme === 'dark' ? 'text-dark ' : 'text-light '"
+        class="operation-block px-4 pt-2 pb-6 text-center border-b-2 "
+        :class="[
+          theme === 'dark'
+            ? 'text-dark border-yellow-900 border-opacity-50'
+            : 'text-light border-yellow-700 border-opacity-20',
+          idx === 0 ? 'border-t-2' : ''
+        ]"
       >
         <label class="inline-flex items-center">
           <span class="mr-2 text-2xl">{{ operation.name }}</span>
@@ -22,7 +27,7 @@
           >
           <VueSlider
             v-model="operation.range1"
-            class="mr-10"
+            class="mx-auto"
             :min="operation.minValue1"
             :max="operation.maxValue1"
             :min-range="+1"
@@ -34,6 +39,7 @@
           >
           <VueSlider
             v-model="operation.range2"
+            class="mx-auto"
             :min="operation.minValue2"
             :max="operation.maxValue2"
             :min-range="+1"
