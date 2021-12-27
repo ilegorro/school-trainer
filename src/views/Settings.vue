@@ -1,5 +1,5 @@
 <template>
-  <div class="px-1">
+  <div class="h-content-area px-1">
     <section class="w-full max-w-md py-8 mx-auto">
       <div
         v-for="operation in operations"
