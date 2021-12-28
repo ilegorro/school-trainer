@@ -18,6 +18,7 @@
             v-model="operation.value"
             type="checkbox"
             class="w-5 h-5 form-checkbox"
+            @change="isChanged = true"
           />
         </label>
         <section :class="{ 'range-not-active': !operation.value }">
@@ -32,6 +33,7 @@
             :max="operation.maxValue1"
             :min-range="+1"
             :width="200"
+            @change="isChanged = true"
           ></VueSlider>
           <span
             >{{ operation.range2Name }} от {{ operation.range2[0] }} до
@@ -44,10 +46,15 @@
             :max="operation.maxValue2"
             :min-range="+1"
             :width="200"
+            @change="isChanged = true"
           ></VueSlider>
         </section>
       </div>
-      <div class="flex justify-center">
+      <div
+        v-if="isChanged"
+        class="flex justify-center sticky bottom-0 py-2"
+        :class="theme === 'dark' ? 'bg-gray-800' : 'bg-white'"
+      >
         <button
           class="flex items-center h-10 px-2 border-2  border-solid rounded-md shadow-md focus:outline-none"
           :class="
@@ -84,6 +91,7 @@ export default {
   },
   data() {
     return {
+      isChanged: false,
       operations: [
         {
           id: 'addition',
@@ -143,7 +151,7 @@ export default {
   computed: {
     ...mapState(['useOperations', 'theme'])
   },
-  mounted() {
+  created() {
     for (const [name, value] of Object.entries(this.useOperations)) {
       this.operations.forEach(element => {
         if (element.id === name) {
@@ -190,18 +198,18 @@ export default {
   @apply text-green-500;
 }
 .form-checkbox {
+  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  appearance: none;
-  -webkit-print-color-adjust: exact;
   color-adjust: exact;
+  -webkit-print-color-adjust: exact;
   display: inline-block;
   vertical-align: middle;
   background-origin: border-box;
+  user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none;
   flex-shrink: 0;
   height: 1.2em;
   width: 1.2em;
