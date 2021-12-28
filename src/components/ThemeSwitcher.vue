@@ -43,8 +43,8 @@ export default {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
 
 .slider:before {
@@ -52,8 +52,6 @@ export default {
   content: '';
   height: 30px;
   width: 30px;
-  left: 0px;
-  bottom: 4px;
   top: 0;
   bottom: 0;
   margin: auto 0;
@@ -69,10 +67,6 @@ export default {
 input:checked + .slider {
   background-color: #2196f3;
 }
-
-/* input:focus + .slider {
-  box-shadow: 0 0 1px #2196f3;
-} */
 
 input:checked + .slider:before {
   -webkit-transform: translateX(20px);
